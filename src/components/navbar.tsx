@@ -32,7 +32,7 @@ export const NavBar = () => {
 					</span>
 					<Badge variant="secondary" className="flex items-center gap-1.5 bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800">
 						<div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-						<span className="text-xs font-medium">127 people online</span>
+						<span className="text-xs font-medium">127 want to be proved wrong</span>
 					</Badge>
 				</div>
 				<div className="ml-auto flex items-center gap-2" />
