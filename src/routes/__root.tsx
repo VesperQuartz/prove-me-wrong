@@ -50,6 +50,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<TanStackDevtools
 					config={{
 						position: "bottom-left",
+						openHotkey: ["Alt", "d"],
 					}}
 					plugins={[
 						{

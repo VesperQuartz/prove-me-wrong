@@ -7,6 +7,10 @@ export const envSchema = z
 		mailPass: z.string(),
 		baseUrl: z.string(),
 		webhookUrl: z.string(),
+		githubClientId: z.string(),
+		githubClientSecret: z.string(),
+		gooleClientId: z.string(),
+		gooleClientSecret: z.string(),
 	})
 	.readonly();
 
@@ -16,4 +20,8 @@ export const env = envSchema.parse({
 	mailPass: String(process.env.MAIL_PASS),
 	baseUrl: String(import.meta.env.VITE_BASE_URL),
 	webhookUrl: String(import.meta.env.VITE_HOOK_URL),
+	githubClientId: String(process.env.AUTH_GITHUB_ID),
+	githubClientSecret: String(process.env.AUTH_GITHUB_SECRET),
+	gooleClientId: String(process.env.AUTH_GOOGLE_ID),
+	gooleClientSecret: String(process.env.AUTH_GOOGLE_ID),
 });

@@ -4,6 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import {
 	DropdownMenu,
@@ -25,9 +26,15 @@ export const NavBar = () => {
 	return (
 		<header className="sticky flex justify-between items-center top-0 z-30 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 			<div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-3 px-4">
-				<span className="font-semibold tracking-tight">
-					<Link to="/">Prove Me Wrong</Link>
-				</span>
+				<div className="flex items-center gap-3">
+					<span className="font-semibold tracking-tight">
+						<Link to="/">Prove Me Wrong</Link>
+					</span>
+					<Badge variant="secondary" className="flex items-center gap-1.5 bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800">
+						<div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+						<span className="text-xs font-medium">127 people online</span>
+					</Badge>
+				</div>
 				<div className="ml-auto flex items-center gap-2" />
 			</div>
 			<div>
