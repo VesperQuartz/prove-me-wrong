@@ -1,0 +1,15 @@
+{
+	"path": "arguments:createArgument",
+	"args": {
+		"userId": "p178jzg8vcjw4360arf7b5vjm57ra0jt",
+		"topic": "AI models will replace most coding jobs by 2030",
+		"summary": "Current AI capabilities in coding: AI tools like GitHub Copilot, ChatGPT, and Claude can generate code, debug issues, and help with routine programming tasks. They're particularly effective at boilerplate code, common algorithms, and translating requirements into initial implementations.",
+		"status": "completed",
+		"improvements": [
+			"AI tools can generate code, debug issues, and help with routine programming tasks. They're particularly effective at boilerplate code, common algorithms, and translating requirements into initial implementations."
+		],
+		"weakPoints": [
+			"AI tools can generate code, debug issues, and help with routine programming tasks. They're particularly effective at boilerplate code, common algorithms, and translating requirements into initial implementations."
+		]
+	}
+}
