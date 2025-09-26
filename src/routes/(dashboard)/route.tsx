@@ -7,7 +7,6 @@ import { NavBar } from "@/components/navbar";
 import { Vapi } from "@/components/vapi";
 
 export const Route = createFileRoute("/(dashboard)")({
-	ssr: "data-only",
 	component: RouteComponent,
 });
 
