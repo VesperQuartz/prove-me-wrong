@@ -2,6 +2,7 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { BsGithub } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
+import z from "zod";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -12,21 +13,26 @@ import {
 } from "@/components/ui/card";
 
 export const Route = createFileRoute("/(auth)/auth")({
+	validateSearch: z.object({
+		redirect: z.string().optional(),
+	}),
 	component: RouteComponent,
 });
 
 function RouteComponent() {
+	const search = Route.useSearch();
+
 	const { signIn } = useAuthActions();
 	const handleGithubAuth = () => {
 		signIn("github", {
-			redirectTo: "/",
+			redirectTo: search.redirect ? search.redirect : "/",
 		});
 	};
 
 	const handleGoogleAuth = () => {
 		console.log("Google authentication initiated");
 		signIn("google", {
-			redirectTo: "/",
+			redirectTo: search.redirect ? search.redirect : "/",
 		});
 	};
 

@@ -20,7 +20,6 @@ export const NavBar = () => {
 	const { signOut } = useAuthActions();
 	const router = useNavigate();
 	const counter = useQuery(api.counter.getDebate);
-	console.log(counter, "COUNTER");
 
 	return (
 		<header className="sticky flex justify-between items-center top-0 z-30 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -81,6 +80,9 @@ export const NavBar = () => {
 								void signOut();
 								router({
 									to: "/auth",
+									search: {
+										redirect: location.href,
+									},
 								});
 							}}
 						>
