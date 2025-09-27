@@ -1,8 +1,7 @@
 import { useAuthActions } from "@convex-dev/auth/react";
-import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
+import { useQuery } from "convex/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -17,11 +16,11 @@ import {
 } from "./ui/dropdown-menu";
 
 export const NavBar = () => {
-	const { data: user } = useSuspenseQuery(
-		convexQuery(api.auth.currentUser, {}),
-	);
+	const user = useQuery(api.auth.currentUser);
 	const { signOut } = useAuthActions();
 	const router = useNavigate();
+	const counter = useQuery(api.counter.getDebate);
+	console.log(counter, "COUNTER");
 
 	return (
 		<header className="sticky flex justify-between items-center top-0 z-30 border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -30,10 +29,17 @@ export const NavBar = () => {
 					<span className="font-semibold tracking-tight">
 						<Link to="/">Prove Me Wrong</Link>
 					</span>
-					<Badge variant="secondary" className="flex items-center gap-1.5 bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800">
-						<div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-						<span className="text-xs font-medium">127 want to be proved wrong</span>
-					</Badge>
+					{!!counter && (
+						<Badge
+							variant="secondary"
+							className="flex items-center gap-1.5 bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800"
+						>
+							<div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+							<span className="text-xs font-medium">
+								{counter} want to be proved wrong
+							</span>
+						</Badge>
+					)}
 				</div>
 				<div className="ml-auto flex items-center gap-2" />
 			</div>

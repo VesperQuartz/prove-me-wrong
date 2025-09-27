@@ -3,6 +3,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import to from "await-to-ts";
 import { api } from "convex/_generated/api";
+import { useMutation } from "convex/react";
 import ky from "ky";
 import React, { lazy, Suspense } from "react";
 import { toast } from "sonner";
@@ -30,6 +31,8 @@ export const Vapi = () => {
 	const [transcript, setTranscript] = React.useState<Array<Msg> | undefined>(
 		undefined,
 	);
+	const inDebate = useMutation(api.counter.inDebate);
+	const outDebate = useMutation(api.counter.outDebate);
 	React.useEffect(() => {
 		if (window.document !== undefined) {
 			setHasDocument(true);
@@ -54,7 +57,11 @@ export const Vapi = () => {
 								setTranscript(message.conversation);
 							}
 						}}
+						onVoiceStart={async () => {
+							await inDebate();
+						}}
 						onVoiceEnd={async () => {
+							await outDebate();
 							console.log("Call is ended!!!", transcript);
 							if (transcript) {
 								const data = transcript.filter(

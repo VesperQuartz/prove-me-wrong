@@ -9,32 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 
-const placeholder = {
-	Id: "1",
-	title: "AI models will replace most coding jobs by 2030",
-	author: "alex",
-	createdAt: "2h ago",
-	content:
-		"After a lengthy back-and-forth with the AI, here are the key points argued for and against...",
-	upvotes: 18,
-	downvotes: 3,
-};
-
-const commentsSeed = [
-	{
-		id: "c1",
-		user: "sarah",
-		text: "Interesting take. Do you have sources?",
-		time: "1h",
-	},
-	{
-		id: "c2",
-		user: "mike",
-		text: "I disagree about timelines but not the direction.",
-		time: "45m",
-	},
-];
-
 function ArgumentDetails() {
 	const { id } = useParams({ from: "/(dashboard)/argument/$id" });
 	const [vote, setVote] = useState<"up" | "down" | null>(null);
@@ -48,10 +22,9 @@ function ArgumentDetails() {
 		argumentId: id as Id<"arguments">,
 	});
 
-	const up =
-		placeholder.upvotes + (vote === "up" ? 1 : 0) - (vote === "down" ? 0 : 0);
-	const down =
-		placeholder.downvotes + (vote === "down" ? 1 : 0) - (vote === "up" ? 0 : 0);
+	const up = useMutation(api.arguments.upvote);
+	const down = useMutation(api.arguments.downvote);
+	const score = useMutation(api.leaderboard.addToLeaderboard);
 
 	return (
 		<div className="space-y-4">
@@ -82,17 +55,31 @@ function ArgumentDetails() {
 							className="rounded-full"
 							variant={vote === "up" ? "default" : "secondary"}
 							size="sm"
-							onClick={() => setVote(vote === "up" ? null : "up")}
+							onClick={async () => {
+								await up({
+									argumentId: id as Id<"arguments">,
+								});
+								// await score({
+								// 	score: 1,
+								// 	userId: argument?.user!._id!,
+								// });
+								setVote(vote === "up" ? null : "up");
+							}}
 						>
-							▲ {up}
+							▲ {argument?.upvote ?? 0}
 						</Button>
 						<Button
 							className="rounded-full"
 							variant={vote === "down" ? "default" : "secondary"}
 							size="sm"
-							onClick={() => setVote(vote === "down" ? null : "down")}
+							onClick={async () => {
+								await down({
+									argumentId: id as Id<"arguments">,
+								});
+								setVote(vote === "down" ? null : "down");
+							}}
 						>
-							▼ {down}
+							▼ {argument?.downvote ?? 0}
 						</Button>
 					</div>
 				</CardContent>

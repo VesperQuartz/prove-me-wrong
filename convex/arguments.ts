@@ -1,6 +1,8 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
+import { api } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
+import { leaderboard } from "./leaderboard";
 
 export const getAllArguments = query({
 	args: {},
@@ -88,5 +90,71 @@ export const createArgument = mutation({
 			improvements: args.improvements,
 			weakPoints: args.weakPoints,
 		});
+	},
+});
+
+export const upvote = mutation({
+	args: {
+		argumentId: v.id("arguments"),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getAuthUserId(ctx);
+		if (!userId) throw new ConvexError("Not authenticated");
+		const check = await ctx.db
+			.query("vote")
+			.filter((q) => q.eq(q.field("userId"), userId))
+			.filter((q) => q.eq(q.field("argumentId"), args.argumentId))
+			.unique();
+		if (check) return;
+		const argument = await ctx.runQuery(api.arguments.getArgumentById, {
+			argumentId: args.argumentId,
+		});
+		if (!argument?._id) throw new ConvexError("Argument not found");
+		await Promise.all([
+			ctx.db.patch(argument._id, {
+				upvote: argument?.upvote ? argument?.upvote + 1 : 1,
+			}),
+			ctx.db.insert("vote", {
+				argumentId: args.argumentId,
+				upvoteType: "upvote",
+				userId: userId,
+			}),
+		]);
+		await ctx.runMutation(api.leaderboard.addToLeaderboard, {
+			score: 1,
+			userId: argument.user?._id!,
+		});
+		return { message: "Argument upvoted" };
+	},
+});
+
+export const downvote = mutation({
+	args: {
+		argumentId: v.id("arguments"),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getAuthUserId(ctx);
+		if (!userId) throw new ConvexError("Not authenticated");
+		const check = await ctx.db
+			.query("vote")
+			.filter((q) => q.eq(q.field("userId"), userId))
+			.filter((q) => q.eq(q.field("argumentId"), args.argumentId))
+			.unique();
+		if (check) return;
+		const argument = await ctx.runQuery(api.arguments.getArgumentById, {
+			argumentId: args.argumentId,
+		});
+		if (!argument?._id) throw new ConvexError("Argument not found");
+		await Promise.all([
+			ctx.db.patch(argument._id, {
+				downvote: argument?.downvote ? argument?.downvote + 1 : 1,
+			}),
+			ctx.db.insert("vote", {
+				argumentId: args.argumentId,
+				upvoteType: "downvote",
+				userId: userId,
+			}),
+		]);
+		return { message: "Argument downvoted" };
 	},
 });

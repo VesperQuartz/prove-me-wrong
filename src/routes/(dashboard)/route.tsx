@@ -1,18 +1,24 @@
 import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { api } from "convex/_generated/api";
 import { Authenticated, useConvexAuth } from "convex/react";
 import { NavBar } from "@/components/navbar";
+import { PageLoader } from "@/components/page-loader";
 import { Vapi } from "@/components/vapi";
 
 export const Route = createFileRoute("/(dashboard)")({
+	loader: async ({ context }) => {
+		const data = await context.queryClient.ensureQueryData(
+			convexQuery(api.auth.currentUser, {}),
+		);
+		console.log(data, "from loader");
+	},
+	pendingComponent: PageLoader,
 	component: RouteComponent,
 });
 
 function RouteComponent() {
 	const { isLoading: isPending, isAuthenticated } = useConvexAuth();
-	const { isLoading } = useSuspenseQuery(convexQuery(api.auth.currentUser, {}));
 	const router = useNavigate();
 
 	if (isPending) {
@@ -39,7 +45,7 @@ function RouteComponent() {
 				<main className="mx-auto w-full max-w-7xl flex-1 p-4">
 					<Outlet />
 				</main>
-				{isLoading ? <div>Loading</div> : <Vapi />}
+				<Vapi />
 			</div>
 		</Authenticated>
 	);

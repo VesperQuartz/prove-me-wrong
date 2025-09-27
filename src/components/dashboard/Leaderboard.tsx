@@ -1,30 +1,21 @@
+import { api } from "convex/_generated/api";
+import { useQuery } from "convex/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-
-type Leader = {
-	Id: string;
-	user: string;
-	score: number;
-};
-
-const placeholder: Leader[] = [
-	{ Id: "1", user: "sarah", score: 120 },
-	{ Id: "2", user: "alex", score: 98 },
-	{ Id: "3", user: "mike", score: 87 },
-	{ Id: "4", user: "joy", score: 72 },
-];
 
 export function Leaderboard() {
+	const leaderboard = useQuery(api.leaderboard.getLeaderboard);
+	console.log("leaderboard", leaderboard);
 	return (
-		<Card id="leaderboard" className="border-muted/50 rounded-2xl shadow-sm">
+		<Card className="border-muted/50 rounded-2xl shadow-sm">
 			<CardHeader>
 				<CardTitle className="text-base">Leaderboard</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<ol className="space-y-2">
-					{placeholder.map((l, idx) => (
+					{leaderboard?.map((l, idx) => (
 						<li
-							key={l.Id}
+							key={l._id}
 							className="flex items-center justify-between rounded-md px-2 py-1"
 						>
 							<div className="flex items-center gap-3">
@@ -42,14 +33,15 @@ export function Leaderboard() {
 										color: idx < 3 ? "#111827" : "hsl(var(--muted-foreground))",
 									}}
 								>
-									{idx + 1}
+									{l.rank}
 								</span>
 								<Avatar className="h-6 w-6">
+									<AvatarImage src={l.user?.image} />
 									<AvatarFallback>
-										{l.user.slice(0, 2).toUpperCase()}
+										{l.user?.name?.slice(0, 2).toUpperCase()}
 									</AvatarFallback>
 								</Avatar>
-								<span className="font-medium">{l.user}</span>
+								<span className="font-medium">{l.user?.name}</span>
 							</div>
 							<span className="tabular-nums text-sm">{l.score}</span>
 						</li>

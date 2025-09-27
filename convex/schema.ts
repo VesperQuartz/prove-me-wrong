@@ -23,4 +23,8 @@ export default defineSchema({
 		userId: v.id("users"),
 		text: v.string(),
 	}),
+	leaderboard: defineTable({
+		score: v.number(),
+		userId: v.id("users"),
+	}),
 });

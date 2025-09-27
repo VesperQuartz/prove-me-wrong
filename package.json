@@ -18,9 +18,11 @@
 	},
 	"dependencies": {
 		"@auth/core": "0.40.0",
+		"@convex-dev/aggregate": "^0.1.24",
 		"@convex-dev/auth": "^0.0.90",
 		"@convex-dev/better-auth": "^0.8.6",
 		"@convex-dev/react-query": "^0.0.0-alpha.11",
+		"@convex-dev/sharded-counter": "^0.1.8",
 		"@faker-js/faker": "^10.0.0",
 		"@fontsource-variable/geist": "^5.2.8",
 		"@fontsource-variable/hanken-grotesk": "^5.2.8",

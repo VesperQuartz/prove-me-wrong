@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { RecentArguments } from "@/components/dashboard/RecentArguments";
+import { Suspense } from "react";
 import { Leaderboard } from "@/components/dashboard/Leaderboard";
 import { MyArguments } from "@/components/dashboard/MyArguments";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Suspense } from "react";
+import { RecentArguments } from "@/components/dashboard/RecentArguments";
 import {
-	RecentArgumentsSkeleton,
 	LeaderboardSkeleton,
 	MyArgumentsSkeleton,
+	RecentArgumentsSkeleton,
 } from "@/components/dashboard/Skeletons";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Dashboard = () => {
 	return (

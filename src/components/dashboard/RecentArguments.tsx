@@ -1,15 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "@tanstack/react-router";
-import { Badge } from "@/components/ui/badge";
 import { api } from "convex/_generated/api";
 import { useQuery } from "convex/react";
 import { formatDistance } from "date-fns";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function RecentArguments() {
 	const recent = useQuery(api.arguments.getResentArguments);
 	console.log("recent", recent);
 	return (
-		<Card id="recent" className="border-muted/50 rounded-2xl shadow-sm">
+		<Card className="border-muted/50 rounded-2xl shadow-sm">
 			<CardHeader className="flex flex-row items-center justify-between gap-2">
 				<CardTitle className="text-base">Recent Arguments</CardTitle>
 				<Link
